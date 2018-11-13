@@ -1,0 +1,208 @@
+<?php
+    
+   require_once 'init.php'; 
+   function findUserById($id){
+      global $db;
+      $stmt = $db->prepare("SELECT * FROM users WHERE id=? LIMIT 1");
+      $stmt->execute(array($id));
+      $user = $stmt->fetch(PDO::FETCH_ASSOC);
+      return $user;
+   }
+   function findUserByEmail($email){
+      global $db;
+      $stmt = $db->prepare("SELECT * FROM users WHERE email=? LIMIT 1");
+      $stmt->execute(array($email));
+      $user = $stmt->fetch(PDO::FETCH_ASSOC);
+      return $user;
+   }
+
+   function findAllPostsById($userid)
+   {
+      global $db;
+      $stmt = $db->prepare("SELECT * 
+                       FROM posts 
+                       WHERE posts.userid = ? 
+                       ORDER BY posts.createdat DESC");
+      $stmt->execute(array($userid));
+      $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      return $posts;
+   }
+   function findAllImagesById($userid)
+   {
+      global $db;
+      $stmt = $db->prepare("SELECT *
+                       FROM post_images 
+                       LEFT JOIN posts  ON posts.id = post_images.postid
+                       WHERE post_images.userid = ?
+                       ORDER BY post_images.uploaded_on DESC");
+      $stmt->execute(array($userid));
+      $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      return $posts;
+   }
+   function findProfileImage($userid)
+   {
+      global $db;
+      $stmt = $db->prepare("SELECT *
+                       FROM profile
+                       WHERE profile.userid = ? AND 
+                       profile.header_cover IS NULL");
+      $stmt->execute(array($userid));
+      $user = $stmt->fetch(PDO::FETCH_ASSOC);
+      return $user;
+   }
+   function findProfileById($userid)
+   {
+      global $db;
+      $stmt = $db->prepare("SELECT *
+                       FROM profile
+                       WHERE profile.userid = ? LIMIT 1");
+      $stmt->execute(array($userid));
+      $user = $stmt->fetch(PDO::FETCH_ASSOC);
+      return $user;
+
+   }
+   function updateProfile($strSql)
+   {
+      global $db;
+      /*$existsProfile = findProfileById($userid);
+      if(!$existsProfile)
+*/    {
+         $profile = $db->query($strSql);
+         return $profile;
+      }
+      return false;
+   }  
+   function test_input($data)
+   {
+      $data = trim($data);
+      $data=stripcslashes($data);
+      $data = htmlspecialchars($data);
+      return $data;
+   }
+   function uploadImage($nameImage,$sizeImage,$tempImage,$dir,$strSql)
+   {  
+      global $db;
+      // Check if image file is a actual image or fake image
+      if(!empty($nameImage)) 
+      {
+         $allowType =  array('jpg','png','jpeg','gif');
+         $target_dir = "Users/".$dir;
+         $target_file = $target_dir . basename($nameImage);
+         $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+         if(file_exists($target_file))
+            return 0;
+         if(in_array($imageFileType, $allowType))
+         {
+            $check = getimagesize($tempImage);
+            if($check !== false)
+            {
+               move_uploaded_file($tempImage, $target_file);
+               resizeImage($target_file,500,500,false,$target_file);
+            }
+
+            $insertImage = $db->query($strSql);
+            if($insertImage)
+            {
+               return 1;
+            }
+            else
+               return 0;
+         }
+         else
+            return -2;
+      }
+      return -3;
+   }
+   function deleteDirectory($dirname) {
+         if (is_dir($dirname))
+           $dir_handle = opendir($dirname);
+     if (!$dir_handle)
+          return false;
+     while($file = readdir($dir_handle)) {
+           if ($file != "." && $file != "..") {
+                if (!is_dir($dirname."/".$file))
+                     unlink($dirname."/".$file);
+                else
+                     delete_directory($dirname.'/'.$file);
+           }
+     }
+     closedir($dir_handle);
+     rmdir($dirname);
+     return true;
+}
+   function UploadPost($content,$userid)
+   {
+      global $db;
+      $stmt = $db->prepare("INSERT INTO posts(content,userid,createdat) 
+                       VALUES (?,?,NOW())");
+      $stmt->execute(array($content,$userid));
+      $user = $stmt->fetch(PDO::FETCH_ASSOC);
+      return;
+   }
+   function DeletePost($postid)
+   {
+      global $db;
+      $stmt = $db->prepare("DELETE FROM posts WHERE posts.id = ?");
+      $stmt->execute(array($postid));
+      return;
+   }
+   function DeleteImagePost($imageid)
+   {
+      global $db;
+      $stmt = $db->prepare("DELETE FROM post_images WHERE post_images.id = ?");
+      $stmt->execute(array($imageid));
+      return;
+   }
+   function MaxIdPost()
+   {
+      global $db; 
+      $stmt = $db->prepare("SELECT MAX(id) as max
+                       FROM posts");
+      $stmt->execute();
+      $maxid = $stmt->fetch(PDO::FETCH_ASSOC);
+      return $maxid['max'];
+   }
+   function resizeImage($file, $w, $h, $crop=false,$output) 
+   {
+      list($width, $height) = getimagesize($file);
+      $r = $width / $height;
+      if ($crop)
+      {
+         if ($width > $height) 
+         {
+               $width = ceil($width-($width*abs($r-$w/$h)));
+         } 
+         else 
+         {
+            $height = ceil($height-($height*abs($r-$w/$h)));
+         }
+         $newwidth = $w;
+         $newheight = $h;
+      } 
+      else 
+      {
+         if ($w/$h > $r) 
+         {
+               $newwidth = $h*$r;
+               $newheight = $h;
+         } 
+         else 
+         {
+               $newheight = $w/$r;
+               $newwidth = $w;
+         }
+      }
+      $src = imagecreatefromjpeg($file);
+      $dst = imagecreatetruecolor($newwidth, $newheight);
+      imagecopyresampled($dst, $src, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+      imagejpeg($dst, $output);
+   }
+   function createUser($email,$fullname,$passwordHash)
+   {
+      global $db;
+      $stmt = $db->prepare("INSERT INTO users(email,fullname,password)
+                       VALUES (?,?,?)");
+      $stmt->execute(array($email,$fullname,$passwordHash));
+      return $db->lastInsertId();   
+   }
+   ?>

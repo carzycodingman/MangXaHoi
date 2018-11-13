@@ -1,0 +1,82 @@
+.user
+{
+    width: 450px;
+    position: relative;
+    left: 300px;
+}
+.user_title
+{
+    text-align: center;
+}
+.err
+{
+    color : red;
+}
+#btnUploadImage{
+	width: 50px;
+}
+#sharePost
+{
+	width: 100%;
+	position: relative;
+	display: inline-block;
+}
+#submitShare
+{
+	width: 75px;
+    position: relative;
+    left: 415px;
+    bottom: 4px;
+}
+#selectImage
+{
+	background-color: rgb(242, 242, 242);
+	position: relative;
+	width: 75px;
+}
+#selectImage:hover
+{
+	background-color: rgb(217, 217, 217);
+}
+#imageShow
+{
+	position:  relative;
+    left: 15PX;
+    bottom: -63PX;
+    
+}
+#textbox{
+	width: inherit;
+}
+#uploadsCover
+{
+	height: 40px;
+    width: 160px;
+    position: relative;
+    border: 3px solid rgb(0, 0, 0)
+}
+#uploadsCover span {
+	font-size: 14px;
+    position: relative;
+    bottom: -4px;
+}
+#uploadsCover img{
+	width: 27px;
+    opacity: 0.5;
+    padding-left: 7px;
+    position: relative;
+    bottom: -3px;
+}
+#nameUser{
+	color: hsla(240, 100%, 27%,0.5);
+    position: relative;
+    left: 15px;
+    bottom: -15px;
+
+}
+#timeUpload
+{
+	position: relative;
+    left: 15px;
+    bottom: -15px;
+}

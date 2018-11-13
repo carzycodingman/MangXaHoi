@@ -1,0 +1,29 @@
+.user
+{
+    width: 450px;
+    position: relative;
+    left: 300px;
+}
+.user_title
+{
+    text-align: center;
+}
+.err
+{
+    color : red;
+}
+#btnUploadImage{
+	width: 50px;
+}
+#sharePost{
+	width: 75px;
+	}
+.selectImage
+{
+	display: inline-block;
+	background-color :rgba(204, 204, 204,0.4);
+}
+.selectImage:hover
+{
+	background-color: rgb(166, 166, 166,0.5);
+}

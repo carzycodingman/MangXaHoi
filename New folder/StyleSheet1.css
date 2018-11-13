@@ -1,0 +1,224 @@
+*{
+    border-radius:3px;
+}
+body{
+    height:100%;
+
+}
+
+#profile_cover {
+    width: 18%;
+    height: 44%;
+    left: 3%;
+    top: 220px;
+    background-image: url(img/39129967_305993753486161_141675955889373184_n.jpg);    
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: 75px;
+    border: 3px solid white;
+}
+#header {
+    background-image: url(img/36726847_268910547194482_6615651221107638272_n.jpg);
+    width: inherit;
+    height: 352px;
+    background-repeat: no-repeat;
+    position: relative;
+    background-position: center;
+    background-size: 100% auto;
+    margin-left: 0px;
+}
+.position_sector{
+    position:absolute;
+}
+.background_sector {
+    background-color: white;
+}
+
+.option_header {
+    z-index: -1;
+    text-align: center;
+    line-height: 42px;
+    font-weight: bold;
+    color: hsla(240, 100%, 27%,0.5);
+    font-size:13px;
+}
+#user_name {
+    left: 205px;
+    bottom: 50px;
+    color: white;
+    font-family: 'Pacifico', cursive;
+    font-size: 30px;
+}
+#nick_name {
+    left: 368px;
+    bottom: 8px;
+    color: white;
+    font-family: 'Pacifico', cursive;
+    font-size: 25px;
+}
+#name {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+#gioi_thieu {
+    position: relative;
+    width: 340px;
+    left: 0px;
+    bottom: -92px;
+    height: 410px;
+    text-align: center;
+}
+#sb_site {
+    background-color: rgba(13, 49, 114,0.10);
+}
+
+#middle {
+    position: relative;
+    width: 875px;
+    height: 100%;
+    left: 6%;
+}
+#lien_lac {
+    position: fixed;
+    width: 271px;
+    height: 100%;
+    left: 1090px;
+    bottom: -30px;
+}
+#trong {
+    width: 230px;
+    height: 44px;
+    left: 0px;
+    bottom: -44px;
+}
+#dong_thoi_gian {
+    width: 160px;
+    height: 44px;
+    left: 232px;
+    bottom: -44px;
+}
+#gioi_thieu_layout {
+    width: 109px;
+    height: 44px;
+    left: 394px;
+    bottom: -44px;
+}
+#ban_be {
+    width: 106px;
+    height: 44px;
+    left: 505px;
+    bottom: -44px;
+}
+#luu_tru {
+    width: 91px;
+    height: 44px;
+    left: 679px;
+    bottom: -44px;
+}
+#xem_them {
+    width: 103px;
+    height: 44px;
+    left: 772px;
+    bottom: -44px;
+}
+#anh {
+    width: 64px;
+    height: 44px;
+    left: 613px;
+    bottom: -44px;
+}
+#gt_header {
+    width: 109px;
+    position: absolute;
+    margin-left: 4px;
+    margin-top: 15px;
+    font-size: 16px;
+    left: -3px;
+    top: -8px;
+}
+.icon_header{
+    color:darkslateblue;
+    font-size:20px;
+}
+.gt_format {
+    text-align: left;
+    display: inline-flex;
+    width: inherit;
+}
+#gt_content {
+    width: inherit;
+    height: 280px;
+    position: absolute;
+    top: 86px;
+    display: block;
+    font-size: 13px;
+    left: -6px;
+}
+.can_le_icon{
+    margin:0px 15px;
+}
+.can_le_text{
+    margin:15px 0px;
+}
+.lien_he{
+    margin:15px 15px 15px 15px;
+    font-size:14px;
+    text-align:left;
+}
+#lh_header {
+    font-weight: bold;
+    margin: 15px 15px 15px 15px;
+    font-size: 10px;
+}
+#ds_mon_hoc {
+    position: absolute;
+    width: 530px;
+    height: 40px;
+    left: 345px;
+    bottom: 277px;
+    background-color: white;
+    font-size: 16px;
+}
+.dsmh_header {
+    margin-top: 15px;
+    margin-left: 4px;
+    display:inline-block
+}
+.ten_truong{
+    font-size:12px;
+}
+.dsmh_tieude{
+    font-weight:bold;
+}
+.dsmh_mon_hoc {
+    width: inherit;
+    height: 120px;
+    position: absolute;
+    background-color: white;
+    left: 0px;
+}
+.dsmh_detail {
+    width: inherit;
+    height: 25px;
+    position: absolute;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.dsmh_time {
+    padding-left: 3px;
+    border-left: 1px dotted rgba(13, 49, 114,0.50);
+}
+#dsmh {
+    position: relative;
+    left: 8px;
+    top: -7px;
+}
+.btn{
+    width:200px;
+    text-align:left;
+}
+#menu
+{
+    position: fixed;
+    z-index: 1;
+}
