@@ -4,10 +4,10 @@
   require_once 'functions.php';
   // Xử lý logic ở đây
    //kiểm tra có phai là file image hay không   
-   $postImages = findAllImagesById($currentUser['id']);
-   $posts  = findAllPostsById($currentUser['id']);
+  $page = 'index';
+   $postImages = findAllPostById($currentUser['id']);
    $profile = findProfileById($currentUser['id']);
-   if(isset($_FILES['uploadsProfile']))
+   if(isset($_FILES['uploadsProfile'])&&$profile)
    {
         $imageP = $_FILES['uploadsProfile'];
         $nameImage = $imageP['name'];
@@ -21,7 +21,7 @@
        header('Location:index.php');
     }
 
-   if(isset($_FILES['uploadsCoverImage']))
+   if(isset($_FILES['uploadsCoverImage'])&&$profile)
    {
         $imageC = $_FILES['uploadsCoverImage'];
         $nameImage = $imageC['name'];
@@ -36,35 +36,21 @@
         header('Location:index.php');
    }
 
-   if(isset($_POST['post']))
+   if(isset($_POST['post'])&&isset($_FILES['fileToUpload']))
    {
       $content = $_POST['post'];
-      $postid = null;
-      if(!empty($content))
-      {
-        UploadPost($content,$currentUser['id']);
-        $postid = MaxIdPost();
-        if($postid)
-            $check1 = 1;
-      }
-      if(isset($_FILES['fileToUpload'])&&!is_null($_FILES['fileToUpload']))
-      {
-        $image = $_FILES['fileToUpload'];
-        $nameImage = $image['name'];
-        $sizeImage = $image['size'];
-        $tempImage = $image['tmp_name'];
-        $strSql = "INSERT INTO post_images (name_image,userid,postid,uploaded_on) VALUES('".$nameImage."','".$currentUser['id']."','".$postid."',NOW())";
-        $check = uploadImage($nameImage,$sizeImage,$tempImage,$currentUser['email']."/Uploads/",$strSql);
-        resizeImage("Users/".$currentUser['email']."/Uploads/".$nameImage,500,500,false,
-                    "Users/".$currentUser['email']."/Uploads/".$nameImage);
-      }
-         header('Location:index.php');
+      $image = $_FILES['fileToUpload'];
+      $nameImage = $image['name'];
+      $sizeImage = $image['size'];
+      $tempImage = $image['tmp_name'];
+      $strSql = "INSERT INTO post_images (name_image,content,userid,uploaded_on) VALUES('".$nameImage."','".$content."','".$currentUser['id']."',NOW())";
+      $check = uploadPost($nameImage,$sizeImage,$tempImage,$content,$currentUser['id'],$currentUser['email']."/Uploads/",$strSql);
+      header('Location:index.php');
   }
 ?>
 <?php include 'header.php'; ?>
-	<?php if($currentUser):?>      
+  <?php if($currentUser):?>    
       <div id="middle" >
-
         <div id="header" class=" shadow-none p-3 mb-5 bg-light rounded border" style="background-image: url(Users/<?php echo $currentUser['email']; ?>/Profile/<?php echo $profile['header_cover']; ?>) !important;">
              <form action="index.php" method="post" enctype="multipart/form-data" id="frm2" name="frm2">
                 <input type="file"  name="uploadsCoverImage" id="uploadsCoverImage" style="display: none;" onchange="submitForm('frm2')">
@@ -86,8 +72,8 @@
             <div id="user_name" class="position_sector">
                 <p id="name"><?php echo $currentUser['fullname']?></p>
             </div>
-            <?php if($currentUser['nickname']!=0):?>
-              <div id="nick_name" class="position_sector"><?php echo $currentUser['nickname']?></div>
+            <?php if($profile['nickname']!=NULL):?>
+              <div id="nick_name" class="position_sector">(<?php echo $profile['nickname']; ?>)</div>
             <?php endif;?>
             <div id="trong" class="option_header background_sector position_sector">
 
@@ -188,7 +174,7 @@
          </form>
          </div>
             <?php foreach($postImages as $image):?>
-                <?php if($image['postid']!=0):?>
+                <?php if($image['content']!=NULL&&$image['name_image']!=NULL):?>
                     <div id="post" class="dsmh_mon_hoc" style="line-height:8px;margin: 15px 15px;">
                       <p><strong id="nameUser"><?php echo $currentUser['fullname'];?></strong></p>
                       <p id="timeUpload" class="ten_truong glyphicon glyphicon-briefcase can_le_icon"><?php echo $image['uploaded_on'];?></p>
@@ -196,17 +182,28 @@
                       <img id="imageShow"src="Users/<?php echo $currentUser['email']; ?>/Uploads/<?php echo $image['name_image']; ?>"/>
                     </div>
                 <?php else: ?>
-                    <div class="dsmh_mon_hoc" style="line-height:8px;margin: 15px 15px;">
-                      <p><strong style="color: hsla(240, 100%, 27%,0.5);"><?php echo $currentUser['fullname'];?></strong></p>
-                      <p class="ten_truong glyphicon glyphicon-briefcase can_le_icon"><?php echo $image['uploaded_on'];?></p>
-                      <img id="imageShow" src="Users/<?php echo $currentUser['email']; ?>/Uploads/<?php echo $image['name_image']; ?>"/>
+                  <?php if($image['name_image']==NULL&&$image['content']!=NULL): ?>
+                    <div class="dsmh_mon_hoc" style="line-height:15px;margin: 15px 15px;height: auto;">
+                      <p><strong style="    color: hsla(240, 100%, 27%,0.5);position: relative;left: 15px;top: 10px;"><?php echo $currentUser['fullname'];?></strong></p><br/>
+                      <p class="ten_truong glyphicon glyphicon-briefcase can_le_icon"><?php echo $image['uploaded_on'];?></p><br/>
+                      <div style="width: inherit;">
+                      <p style="position:relative;left:0px;top:0px;" class="dsmh_detail"><?php echo $image['content'];?></p>
                     </div>
+                    </div>
+                    <?php else:?>
+                      <div id="post" class="dsmh_mon_hoc" style="line-height:8px;margin: 15px 15px;">
+                        <p><strong id="nameUser"><?php echo $currentUser['fullname'];?></strong></p>
+                        <p id="timeUpload" class="ten_truong glyphicon glyphicon-briefcase can_le_icon"><?php echo $image['uploaded_on'];?></p>
+                        <img id="imageShow"src="Users/<?php echo $currentUser['email']; ?>/Uploads/<?php echo $image['name_image']; ?>"/>
+                      </div>
+                    <?php endif;?>      
                 <?php endif;?>
-              <?php endforeach;?> 
-        </div>
+              <?php endforeach;?>
+              </div>
+              </div> 
       <?php else: ?>
-      Chào mừng bạn đến với mạng xã hội ...	
-	   <?php  	endif; ?>
+      Chào mừng bạn đến với mạng xã hội ... 
+     <?php    endif; ?>
        <script type="text/javascript">
        </script>
 <?php include 'footer.php'; ?>

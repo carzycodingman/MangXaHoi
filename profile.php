@@ -7,7 +7,8 @@ $page = 'profile';
 $success = false;
 if(isset($_POST['university'])&&isset($_POST['majors'])&&
    isset($_POST['highschool'])&&isset($_POST['birthday'])&&
-   isset($_POST['placeofbirth'])&&isset($_POST['currentresidence']))
+   isset($_POST['placeofbirth'])&&isset($_POST['currentresidence'])&&
+   isset($_POST['nickname']))
 {
 	$university = $_POST['university'];
 	$highschool = $_POST['highschool'];
@@ -15,8 +16,9 @@ if(isset($_POST['university'])&&isset($_POST['majors'])&&
 	$birthday = $_POST['birthday'];
 	$placeofbirth = $_POST['placeofbirth'];
 	$currentresidence = $_POST['currentresidence'];
-	$strSql = "INSERT INTO profile(university,majors,highschool,birthday,placeofbirth,currentresidence,userid,uploaded_on)
-			   VALUES('".$university."','".$majors."','".$highschool."','".$birthday."','".$placeofbirth."','".$currentresidence."','".$currentUser['id']."',NOW())";
+	$nickname = $_POST['nickname'];
+	$strSql = "INSERT INTO profile(university,majors,highschool,birthday,placeofbirth,currentresidence,userid,nickname,uploaded_on)
+			   VALUES('".$university."','".$majors."','".$highschool."','".$birthday."','".$placeofbirth."','".$currentresidence."','".$currentUser['id']."','".$nickname."',NOW())";
 	$success = updateProfile($strSql);
 	if($success)
 	{
@@ -54,6 +56,10 @@ if(isset($_POST['university'])&&isset($_POST['majors'])&&
 		<div class="form-group">
 			<label for="currentresidence">Hiện tại bạn đang sinh sống ở đâu?</label>
 			<input type="text" class="form-control" id="currentresidence" name ="currentresidence">	
+		</div>
+		<div class="form-group">
+			<label for="nickname">Nick name của bạn là gì?</label>
+			<input type="text" class="form-control" id="nickname" name ="nickname">	
 		</div>
 		<input type="submit" class="btn btn-primary">Cập nhật</input>
 	</form>

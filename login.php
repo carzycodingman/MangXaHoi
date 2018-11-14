@@ -44,7 +44,7 @@ if(isset($_POST['email'])&&isset($_POST['password']))
 		if($check==True)
 		{
 			$_SESSION['userid'] = $user['id'];
-			header('Location: index.php');
+			header('Location: home.php');
 			$success = True;
 		}
 		else if(empty($password))

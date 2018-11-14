@@ -1,4 +1,28 @@
-
+<?php
+	if($page === 'index')
+    {
+    	if(!$currentUser)
+      		echo '<style type"text/css">
+            	#navheader{
+              	left:835px; 
+              	}
+          		</style>';
+         else
+         	echo '<style type"text/css">
+            	#navheader{
+              	left:802px; 
+              	}
+          		</style>';
+    } 
+    else
+    {
+      echo '<style type"text/css">
+            #navheader{
+              left:782px; 
+            }
+        </style>';
+    }
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,6 +44,7 @@
    		return false; // Prevent page refresh
 	}
 	</script>
+	
 </head>
 <body id="sb_site">
 	<div class="container">
@@ -30,7 +55,7 @@
 					<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
 					<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
 				</form>
-				<ul class="navbar-nav mr-auto" style="margin-right: 0px;position: absolute;left: 860px;" >
+				<ul id="navheader" class="navbar-nav mr-auto" style="margin-right: 0px;position: absolute;" >
 					<?php if(!$currentUser): ?>
 					<li class="nav-item <?php echo $page === 'login'? 'active':''?>">
 						<a class="nav-link" href="login.php">Đăng nhập</a>
@@ -48,7 +73,21 @@
 					</li>
 					<?php endif; ?>
 					<li class="nav-item header_button <?php echo $page === 'index'? 'active':''?>">
-						<a class="nav-link" href="index.php">Trang chủ</a>
+						<a class="nav-link" href="<?php echo $page == 'index' && $currentUser ? 'home.php':'index.php'?>">
+							<?php
+								if($page === 'index')
+								{
+									echo 'Trang chủ';
+								}
+								else
+								{
+									if(!$currentUser)
+										echo 'Trang chủ';
+									else
+										echo 'Trang cá nhân';
+								}
+							?>
+						</a>
 					</li>
 				</ul>
 			</div>

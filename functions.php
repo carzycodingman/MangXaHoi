@@ -14,26 +14,26 @@
       $user = $stmt->fetch(PDO::FETCH_ASSOC);
       return $user;
    }
-
-   function findAllPostsById($userid)
+   function findAllPostById($userid)
    {
       global $db;
-      $stmt = $db->prepare("SELECT * 
-                       FROM posts 
-                       WHERE posts.userid = ? 
-                       ORDER BY posts.createdat DESC");
+      $stmt = $db->prepare("SELECT *
+                            FROM post_images
+                            WHERE post_images.userid = ?
+                            ORDER BY post_images.uploaded_on DESC");
       $stmt->execute(array($userid));
       $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
       return $posts;
    }
-   function findAllImagesById($userid)
+   function findAllPost($userid)
    {
       global $db;
       $stmt = $db->prepare("SELECT *
-                       FROM post_images 
-                       LEFT JOIN posts  ON posts.id = post_images.postid
-                       WHERE post_images.userid = ?
-                       ORDER BY post_images.uploaded_on DESC");
+                            FROM post_images
+                            LEFT JOIN friend_list ON friend_list.friendid = post_images.userid
+                            LEFT JOIN users ON users.id = post_images.userid
+                            WHERE friend_list.friendid IS NOT NULL OR post_images.userid = ? 
+                            ORDER BY post_images.uploaded_on DESC");
       $stmt->execute(array($userid));
       $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
       return $posts;
@@ -77,6 +77,21 @@
       $data=stripcslashes($data);
       $data = htmlspecialchars($data);
       return $data;
+   }
+   function uploadPost($nameImage,$sizeImage,$tempImage,$content,$userid,$dir,$strSql)
+   {  
+      global $db;
+      if($nameImage == NULL&&$content!=NULL)
+      {
+          $strSql2 = "INSERT INTO post_images (content,userid,uploaded_on) VALUES('".$content."','".$userid."',NOW())";
+          $insertImage = $db->query($strSql2);
+          return;          
+      }
+      uploadImage($nameImage,$sizeImage,$tempImage,$dir,$strSql);
+      resizeImage("Users/".$dir.$nameImage,500,500,false,
+                    "Users/".$dir.$nameImage);
+      return;  
+
    }
    function uploadImage($nameImage,$sizeImage,$tempImage,$dir,$strSql)
    {  
@@ -126,38 +141,6 @@
      rmdir($dirname);
      return true;
 }
-   function UploadPost($content,$userid)
-   {
-      global $db;
-      $stmt = $db->prepare("INSERT INTO posts(content,userid,createdat) 
-                       VALUES (?,?,NOW())");
-      $stmt->execute(array($content,$userid));
-      $user = $stmt->fetch(PDO::FETCH_ASSOC);
-      return;
-   }
-   function DeletePost($postid)
-   {
-      global $db;
-      $stmt = $db->prepare("DELETE FROM posts WHERE posts.id = ?");
-      $stmt->execute(array($postid));
-      return;
-   }
-   function DeleteImagePost($imageid)
-   {
-      global $db;
-      $stmt = $db->prepare("DELETE FROM post_images WHERE post_images.id = ?");
-      $stmt->execute(array($imageid));
-      return;
-   }
-   function MaxIdPost()
-   {
-      global $db; 
-      $stmt = $db->prepare("SELECT MAX(id) as max
-                       FROM posts");
-      $stmt->execute();
-      $maxid = $stmt->fetch(PDO::FETCH_ASSOC);
-      return $maxid['max'];
-   }
    function resizeImage($file, $w, $h, $crop=false,$output) 
    {
       list($width, $height) = getimagesize($file);

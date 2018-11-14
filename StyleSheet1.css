@@ -30,7 +30,8 @@ body{
     left: 60px;
     bottom: -10px;
 }
-#selectProfile span {
+#selectProfile span 
+{
     position: relative;
     left: 6px;
     bottom: -40px;
@@ -83,6 +84,7 @@ body{
     color: white;
     font-family: 'Pacifico', cursive;
     font-size: 25px;
+    color: rgb(115, 115, 115);
 }
 #name {
     margin-top: 0px;
@@ -204,7 +206,7 @@ body{
     width: 530px;
     left: 345px;
     height: 250px;
-    bottom: 69px;
+    bottom: -153px;
     font-size: 16px;
     background-color :rgba(204, 204, 204,0.4); 
 }
@@ -229,10 +231,18 @@ body{
 }
 .dsmh_detail {
     width: inherit;
-    height: 25px;
+    height: auto;
+    line-height: 20px;
     position: absolute;
     padding-left: 15px;
     padding-right: 15px;
+
+    -moz-hyphens:auto;
+-ms-hyphens:auto;
+-webkit-hyphens:auto;
+hyphens:auto;
+word-wrap:break-word;
+
 }
 .dsmh_time {
     padding-left: 3px;
