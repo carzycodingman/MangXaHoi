@@ -71,8 +71,13 @@ if(isset($_POST['email'])&&isset($_POST['password']))
 			<input type="password" id="password" name ="password"class="form-control" >
 			<span style="color:red"><?php echo $passErr;?></span>
 		</div>
-		<button type="submit" class="btn btn-primary">Đăng nhập</button><br/>
-		<span style="color:red"><?php echo $err;?></span>
+		<div style="position: relative;left: 45px;">
+			<a href="forgot_pass.php"><button type="button" class="btn btn-primary" >Quên mật khẩu?
+			</button>
+			</a>			
+			<button type="submit" class="btn btn-primary">Đăng nhập</button><br/>
+			<span style="color:red;position: relative;left: 220px;"><?php echo $err;?></span>
+		</div>
 	</form>
 <?php endif;?>
 <?php include 'footer.php'; ?>

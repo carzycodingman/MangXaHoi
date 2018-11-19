@@ -65,7 +65,7 @@
 					</li>
 					<?php else:?>
 					<li class="nav-item ">
-						<a class="nav-link" href="logout.php">Đổi mật khẩu</a>
+						<a class="nav-link" href="change_pass.php">Đổi mật khẩu</a>
 					</li>
 
 					<li class="nav-item ">

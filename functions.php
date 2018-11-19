@@ -1,5 +1,34 @@
 <?php
-   
+    // Import PHPMailer classes into the global namespace
+    // These must be at the top of your script, not inside a function
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\Exception;
+
+    //Load Composer's autoloader
+    require 'vendor/autoload.php';
+   function resetPassword($strSql)
+   {
+      global $db;    
+      $newPass = $db->query($strSql);
+      return $newPass;
+   }
+   function markResetPassUsed($secret)
+   {
+      global $db;
+      $stmt = $db->prepare("UPDATE pass_reset 
+                            SET pass_reset.used = 1
+                            WHERE pass_reset.secret = ?");
+      $stmt->execute(array($secret));
+      $passReset = $stmt->fetch(PDO::FETCH_ASSOC);
+   }
+   function findSecretPassword($secret)
+   {
+      global $db;
+      $stmt = $db->prepare("SELECT * FROM pass_reset WHERE secret=? LIMIT 1");
+      $stmt->execute(array($secret));
+      $passReset = $stmt->fetch(PDO::FETCH_ASSOC);
+      return $passReset;
+   }
    function findUserById($id){
       global $db;
       $stmt = $db->prepare("SELECT * FROM users WHERE id=? LIMIT 1");
@@ -64,12 +93,9 @@
    {
       global $db;
       /*$existsProfile = findProfileById($userid);
-      if(!$existsProfile)
-*/    {
-         $profile = $db->query($strSql);
-         return $profile;
-      }
-      return false;
+      if(!$existsProfile)*/    
+      $profile = $db->query($strSql);
+      return $profile;
    }  
    function test_input($data)
    {
@@ -184,6 +210,25 @@
       $stmt->execute(array($email,$fullname,$passwordHash));
       return $db->lastInsertId();   
    }
+   function generateRandomString($length = 10) {
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) 
+    {
+        $randomString .= $characters[rand(0, $charactersLength - 1)];
+    }
+    return $randomString;
+  }
+   function createPasswordReset($userid)
+   {
+      global $db;
+      $secret = generateRandomString();
+      $stmt = $db->prepare("INSERT INTO pass_reset(userid,secret,used,createdAt)
+                       VALUES (?,?,0,NOW())");
+      $stmt->execute(array($userid,$secret));
+      return $secret;
+   }
    DEFINE ('FTP_USER','heroboy102');
    DEFINE('FPT_PASS','A123123123');
    function userMkdir($path)
@@ -212,5 +257,36 @@
         @ftp_close($conn_id); 
         return $currPath;
     
+   }
+   function sentEmail($email,$receiver,$subject,$content)
+   {
+    $mail = new PHPMailer(true);                              // Passing `true` enables exceptions
+   /* try {*/
+    //Server settings
+     /* $mail->SMTPDebug = 2;*/                                 // Enable verbose debug output
+      $mail->isSMTP();                                      // Set mailer to use SMTP
+      $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
+      $mail->SMTPAuth = true;                               // Enable SMTP authentication
+      $mail->Username = 'tanhro966@gmail.com';                 // SMTP username
+      $mail->Password = 'bbkdnltha';                           // SMTP password
+      $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+      $mail->Port = 587;                                    // TCP port to connect to
+
+      //Recipients
+      $mail->setFrom('tanhro966@gmail.com', 'Hoang Trong Trung');
+      $mail->addAddress($email, $receiver);
+
+      //Content
+      $mail->isHTML(true);                                  // Set email format to HTML
+      $mail->Subject = $subject;
+      $mail->Body    = $content;
+
+      $mail->send();
+      return true;
+      /*} 
+      catch (Exception $e) 
+      {
+        return false;
+      }*/
    }
    ?>
