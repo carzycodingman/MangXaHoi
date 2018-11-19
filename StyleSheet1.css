@@ -48,7 +48,7 @@ body{
     position:absolute;
 }
 #header {
-    width: inherit;
+    width: 845px;
     height: 352px;
     background-repeat: no-repeat;
     position: relative;
@@ -92,7 +92,7 @@ body{
 }
 #gioi_thieu {
     position: relative;
-    width: 340px;
+    width: 310px;
     left: 0px;
     bottom: -92px;
     height: 410px;
@@ -107,17 +107,17 @@ body{
     width: 875px;
     height: 100%;
     left: 6%;
-    bottom: -12px;
+    bottom: -40px;
 }
 #lien_lac {
-    position: fixed;
-    width: 271px;
+        position: fixed;
+    width: 252px;
     height: 100%;
-    left: 1090px;
-    bottom: -30px;
+    left: 970px;
+    bottom: -135px;
 }
 #trong {
-    width: 230px;
+    width: 200px;
     height: 44px;
     left: 0px;
     bottom: -44px;
@@ -125,37 +125,37 @@ body{
 #dong_thoi_gian {
     width: 160px;
     height: 44px;
-    left: 232px;
+    left: 202px;
     bottom: -44px;
 }
 #gioi_thieu_layout {
     width: 109px;
     height: 44px;
-    left: 394px;
+    left: 364px;
     bottom: -44px;
 }
 #ban_be {
     width: 106px;
     height: 44px;
-    left: 505px;
+    left: 475px;
     bottom: -44px;
 }
 #luu_tru {
     width: 91px;
     height: 44px;
-    left: 679px;
+    left: 649px;
     bottom: -44px;
 }
 #xem_them {
-    width: 103px;
+    width: 101px;
     height: 44px;
-    left: 772px;
+    left: 742px;
     bottom: -44px;
 }
 #anh {
     width: 64px;
     height: 44px;
-    left: 613px;
+    left: 583px;
     bottom: -44px;
 }
 #gt_header {
@@ -204,7 +204,7 @@ body{
 #ds_mon_hoc {
         position: absolute;
     width: 530px;
-    left: 345px;
+    left: 315px;
     height: 250px;
     bottom: -153px;
     font-size: 16px;
@@ -222,11 +222,11 @@ body{
     font-weight:bold;
 }
 .dsmh_mon_hoc {
-    width: inherit;
+    width: 527px;
     height: 620px;
     position: relative;
     background-color: white;
-    right: 29px;
+    right: 30px;
     bottom: -10px;
 }
 .dsmh_detail {

@@ -4,13 +4,13 @@
     	if(!$currentUser)
       		echo '<style type"text/css">
             	#navheader{
-              	left:835px; 
+              	left:800px; 
               	}
           		</style>';
          else
          	echo '<style type"text/css">
             	#navheader{
-              	left:802px; 
+              	left:755px; 
               	}
           		</style>';
     } 
@@ -18,7 +18,7 @@
     {
       echo '<style type"text/css">
             #navheader{
-              left:782px; 
+              left:730px; 
             }
         </style>';
     }
@@ -48,7 +48,7 @@
 </head>
 <body id="sb_site">
 	<div class="container">
-		<div style="position: relative;">
+		<div style="position: fixed;width: 1100px;z-index: 15;" class="alert alert-primary" role="alert">
 		<nav class="navbar navbar-expand-lg navbar-light bg-light" style="position: relative;">
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<form class="form-inline my-2 my-lg-0">

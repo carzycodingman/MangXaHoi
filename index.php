@@ -50,7 +50,7 @@
 ?>
 <?php include 'header.php'; ?>
   <?php if($currentUser):?>    
-      <div id="middle" >
+      <div id="middle"  style="bottom: -87px;left: 0px;">
         <div id="header" class=" shadow-none p-3 mb-5 bg-light rounded border" style="background-image: url(Users/<?php echo $currentUser['email']; ?>/Profile/<?php echo $profile['header_cover']; ?>) !important;">
              <form action="index.php" method="post" enctype="multipart/form-data" id="frm2" name="frm2">
                 <input type="file"  name="uploadsCoverImage" id="uploadsCoverImage" style="display: none;" onchange="submitForm('frm2')">
@@ -155,7 +155,59 @@
                 </div>
             </div>
         </div>
-        
+        <div id="lien_lac" class="background_sector alert alert-dark shadow-none p-3 mb-5 bg-light rounded border ">
+            <p id="lh_header" class="lien_he list-group-item list-group-item-action active ">Yêu thích</p>
+            <p class="lien_he ">
+                <a href="http://nguyenphucloi.epizy.com/1660321.html" class="list-group-item list-group-item-action" target="_blank">
+                    1 Nguyễn Phúc Lợi
+                </a>
+            </p>
+            <p class="lien_he">
+                <a href="https://nghiiatran.000webhostapp.com/1660370-NghiiaTran.html" class="list-group-item list-group-item-action" target="_blank">
+                    2 Nghĩa Trần
+                </a>
+            </p>
+            <p class="lien_he">
+                <a href="https://trongvx.000webhostapp.com/1660655.html" class="list-group-item list-group-item-action" target="_blank">
+                    3 Võ Xuân Trọng
+                </a>
+            </p>
+            <p class="lien_he">
+                <a href="https://tuevo.000webhostapp.com/1660691.html" class="list-group-item list-group-item-action" target="_blank">
+                    4 Tuệ Võ
+                </a>
+            </p>
+            <p class="lien_he">
+                <a href="https://khonemhoanggia.000webhostapp.com/1660721.html" class="list-group-item list-group-item-action" target="_blank">
+                    5 Trần Quang Vinh
+                </a>
+            </p>
+            <p class="lien_he">
+                <a href="http://test472.coolpage.biz/1660472.html" class="list-group-item list-group-item-action" target="_blank">
+                    6 Nguyễn Minh Quang
+                </a>
+            </p>
+            <p class="lien_he">
+                <a href="https://suonheobay.000webhostapp.com/1660357.html" class="list-group-item list-group-item-action" target="_blank">
+                    7 Trương Phương Hoài Nam
+                </a>
+            </p>
+            <p class="lien_he">
+                <a href="https://tkloc.000webhostapp.com/1660317.html" class="list-group-item list-group-item-action" target="_blank">
+                    8 Trần Kim Lộc
+                </a>
+            </p>
+            <p class="lien_he">
+                <a href="http://1660372.epizy.com/1660372.html?i=2" class="list-group-item list-group-item-action" target="_blank">
+                    9 Nguyễn Hữu Nghĩa
+                </a>
+            </p>
+            <p class="lien_he">
+                <a href="https://laduylocit.000webhostapp.com/1660318" class="list-group-item list-group-item-action" target="_blank">
+                    10 Lã Duy Lộc
+                </a>
+            </p>
+        </div>
         <div id="ds_mon_hoc" class="shadow-none p-3 mb-5 bg-light rounded border">
         
         <div>
@@ -202,7 +254,9 @@
               </div>
               </div> 
       <?php else: ?>
+        <p  style = "position: absolute;top: 90px;">
       Chào mừng bạn đến với mạng xã hội ... 
+     </p>
      <?php    endif; ?>
        <script type="text/javascript">
        </script>

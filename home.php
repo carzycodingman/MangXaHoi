@@ -19,7 +19,7 @@ if(isset($_POST['post'])||isset($_FILES['fileToUpload']))
 <?php include 'header.php'; ?>
 <?php if($currentUser):?>
 <div id="middle" >
-        <div id="ds_mon_hoc" style="left: 110px;bottom: 343px;" class="shadow-none p-3 mb-5 bg-light rounded border">
+        <div id="ds_mon_hoc" style="left: 110px;bottom: 290px;" class="shadow-none p-3 mb-5 bg-light rounded border">
         <div>
          <form action="home.php" method="post" enctype="multipart/form-data" name="frm3">
             <input type="file"  name="fileToUpload" id="fileToUpload" style="display: none;">
