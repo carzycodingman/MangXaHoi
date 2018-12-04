@@ -1,6 +1,7 @@
 <?php 
 require_once 'init.php';
 require_once 'functions.php';
+require_once 'createPersonalPage.php';
   // Xử lý logic ở đây
 $page = 'regist';
 
@@ -34,11 +35,15 @@ if(isset($_POST['fullname'])&&isset($_POST['email'])&&isset($_POST['password']))
 						$userDir ="Users/".$email;
 						$uploadDir ="Users/".$email."/Uploads";
 						$profileDir ="Users/".$email."/Profile";
-						$imageDir ="Users/".$email."/Images"; 
+						$imageDir ="Users/".$email."/Images";
+						$iconDir ="Users/".$email."/icon"; 
 						mkdir($userDir,0777);
 						mkdir($imageDir,0777);
 						mkdir($profileDir,0777);
 						mkdir($uploadDir,0777);
+						mkdir($iconDir,0777);
+						copyFile('icon/','Users/'.$email.'/icon/');
+						createPersonalPage($email);
 						$_SESSION['userid'] = $userID;
 						$success = true;
 						header('Location: profile.php');

@@ -38,15 +38,15 @@ if(isset($_POST['post'])||isset($_FILES['fileToUpload']))
             <?php foreach($postImages as $image):?>
                 <?php if($image['content']!=NULL&&$image['name_image']!=NULL):?>
                     <div id="post" class="dsmh_mon_hoc" style="line-height:8px;margin: 15px 15px;">
-                      <p><strong id="nameUser"><?php echo $currentUser['fullname'];?></strong></p>
+                      <p><strong id="nameUser"><?php echo $image['fullname'];?></strong></p>
                       <p id="timeUpload" class="ten_truong glyphicon glyphicon-briefcase can_le_icon"><?php echo $image['uploaded_on'];?></p>
                       <p style="top: 76px;" class="dsmh_detail"><?php echo $image['content'];?></p>
-                      <img id="imageShow"src="Users/<?php echo $currentUser['email']; ?>/Uploads/<?php echo $image['name_image']; ?>"/>
+                      <img id="imageShow"src="Users/<?php echo $image['email']; ?>/Uploads/<?php echo $image['name_image']; ?>"/>
                     </div>
                 <?php else: ?>
                   <?php if($image['name_image']==NULL&&$image['content']!=NULL): ?>
                     <div class="dsmh_mon_hoc" style="line-height:15px;margin: 15px 15px;height: auto;">
-                      <p><strong style="    color: hsla(240, 100%, 27%,0.5);position: relative;left: 15px;top: 10px;"><?php echo $currentUser['fullname'];?></strong></p><br/>
+                      <p><strong style="    color: hsla(240, 100%, 27%,0.5);position: relative;left: 15px;top: 10px;"><?php echo $image['fullname'];?></strong></p><br/>
                       <p class="ten_truong glyphicon glyphicon-briefcase can_le_icon"><?php echo $image['uploaded_on'];?></p><br/>
                       <div style="width: inherit;">
                       <p style="position:relative;left:0px;top:0px;" class="dsmh_detail"><?php echo $image['content'];?></p>
@@ -54,9 +54,9 @@ if(isset($_POST['post'])||isset($_FILES['fileToUpload']))
                     </div>
                     <?php else:?>
                       <div id="post" class="dsmh_mon_hoc" style="line-height:8px;margin: 15px 15px;">
-                        <p><strong id="nameUser"><?php echo $currentUser['fullname'];?></strong></p>
+                        <p><strong id="nameUser"><?php echo $image['fullname'];?></strong></p>
                         <p id="timeUpload" class="ten_truong glyphicon glyphicon-briefcase can_le_icon"><?php echo $image['uploaded_on'];?></p>
-                        <img id="imageShow"src="Users/<?php echo $currentUser['email']; ?>/Uploads/<?php echo $image['name_image']; ?>"/>
+                        <img id="imageShow"src="Users/<?php echo $image['email']; ?>/Uploads/<?php echo $image['name_image']; ?>"/>
                       </div>
                     <?php endif;?>      
                 <?php endif;?>

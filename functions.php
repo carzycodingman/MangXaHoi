@@ -1,11 +1,80 @@
-<?php
+  <?php
+    // Import PHPMailer classes into the global namespace
+    // These must be at the top of your script, not inside a functio
     // Import PHPMailer classes into the global namespace
     // These must be at the top of your script, not inside a function
     use PHPMailer\PHPMailer\PHPMailer;
     use PHPMailer\PHPMailer\Exception;
+    
 
     //Load Composer's autoloader
+    require 'vendor/phpmailer/phpmailer/src/PHPMailer.php';
     require 'vendor/autoload.php';
+    function findAllFriend($userid)
+    {
+      global $db;
+      $stmt = $db->prepare("SELECT *
+                            FROM (SELECT friend_list.friendid,friend_list.userid 
+                                       FROM friend_list 
+                                       UNION 
+                                       SELECT request_friend.sent_userid,request_friend.received_userid 
+                                       FROM request_friend
+                                       WHERE request_friend.accepted = 1) AS B
+                            LEFT JOIN users ON   users.id  = B.friendid
+                            WHERE B.userid = ?");
+      $stmt->execute(array($userid));
+      $friends = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      return $friends;
+    }
+    function executeNonQuery($strSql)
+   {
+     global $db;    
+      $newPass = $db->query($strSql);
+      return $newPass;
+   }
+    function findAllRequestFriend($userid)
+    {
+      global $db;
+      $stmt = $db->prepare("SELECT *
+                            FROM request_friend
+                            LEFT JOIN users ON   users.id  =request_friend.sent_userid
+                            WHERE request_friend.received_userid = ? AND
+                            request_friend.accepted = 0");
+      $stmt->execute(array($userid));
+      $requests = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      return $requests;
+    }
+    function copyFile($srcPath,$destPath)
+    {
+      $srcDir = opendir($srcPath);
+      while($readFile = readdir($srcDir))
+      {
+        if($readFile != '.' && $readFile != '..')
+        {
+          /* this check doesn't really make sense to me,
+             you might want !file_exists($destPath . $readFile) */
+          if (!file_exists($readFile)) 
+          {
+            if(copy($srcPath . $readFile, $destPath . $readFile))
+            {
+                echo "Copy file";
+            }
+            else
+            {
+                echo "Canot Copy file";
+            }
+        }
+      }
+    }
+
+    closedir($srcDir);
+    }
+    function createNewFile($fileName,$content)
+    {
+      $personalPage = fopen($fileName, 'w') or die("can't open file");
+      fwrite($personalPage, $content);
+      fclose($personalPage);
+    }
    function resetPassword($strSql)
    {
       global $db;    
@@ -57,13 +126,20 @@
    function findAllPost($userid)
    {
       global $db;
-      $stmt = $db->prepare("SELECT *
+      $stmt = $db->prepare("SELECT DISTINCT post_images.name_image,post_images.userid,post_images.uploaded_on,
+                                            users.fullname,post_images.content,users.email
                             FROM post_images
-                            LEFT JOIN friend_list ON friend_list.friendid = post_images.userid
+                            LEFT JOIN (SELECT friend_list.friendid,friend_list.userid 
+                                       FROM friend_list 
+                                       UNION 
+                                       SELECT request_friend.sent_userid,request_friend.received_userid 
+                                       FROM request_friend
+                                       WHERE request_friend.accepted = 1) AS B ON B.friendid = post_images.userid
                             LEFT JOIN users ON users.id = post_images.userid
-                            WHERE friend_list.friendid IS NOT NULL OR post_images.userid = ? 
+                            WHERE post_images.userid = ? OR 
+                                 B.userid = ?
                             ORDER BY post_images.uploaded_on DESC");
-      $stmt->execute(array($userid));
+      $stmt->execute(array($userid,$userid));
       $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
       return $posts;
    }
@@ -246,7 +322,8 @@
                 }
                 $currPath.="/".trim($dir);
                 if(!@ftp_chdir($conn_id,$currPath)) {
-                    if(!@ftp_mkdir($conn_id,$currPath)) {
+                    if(!@ftp_mkdir($conn_id,$currPath)) 
+                    {
                         @ftp_close($conn_id);
                         return false;
                     }

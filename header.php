@@ -10,7 +10,7 @@
          else
          	echo '<style type"text/css">
             	#navheader{
-              	left:755px; 
+              	left:638px; 
               	}
           		</style>';
     } 
@@ -18,7 +18,7 @@
     {
       echo '<style type"text/css">
             #navheader{
-              left:730px; 
+              left:610px; 
             }
         </style>';
     }
@@ -70,6 +70,9 @@
 
 					<li class="nav-item ">
 						<a class="nav-link" href="logout.php">Đăng xuất</a>
+					</li>
+					<li class="nav-item ">
+						<a class="nav-link" href="requests_friend.php">Yêu cầu kết bạn</a>
 					</li>
 					<?php endif; ?>
 					<li class="nav-item header_button <?php echo $page === 'index'? 'active':''?>">

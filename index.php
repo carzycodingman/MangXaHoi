@@ -7,12 +7,14 @@
   $page = 'index';
    $postImages = findAllPostById($currentUser['id']);
    $profile = findProfileById($currentUser['id']);
+   $friends = findAllFriend($currentUser['id']);
    if(isset($_FILES['uploadsProfile'])&&$profile)
    {
         $imageP = $_FILES['uploadsProfile'];
         $nameImage = $imageP['name'];
         $sizeImage = $imageP['size'];
-        $tempImage = $imageP['tmp_name'];        $strSql ="UPDATE  profile 
+        $tempImage = $imageP['tmp_name'];        
+        $strSql ="UPDATE  profile 
                   SET profile_cover = '".$nameImage."'
                   WHERE userid = '".$currentUser['id']."'";
         $check = uploadImage($nameImage,$sizeImage,$tempImage,$currentUser['email']."/Profile/",$strSql);   
@@ -75,8 +77,8 @@
             <?php if($profile['nickname']!=NULL):?>
               <div id="nick_name" class="position_sector">(<?php echo $profile['nickname']; ?>)</div>
             <?php endif;?>
+            
             <div id="trong" class="option_header background_sector position_sector">
-
             </div>
             <div id="dong_thoi_gian" class="option_header background_sector position_sector">
                 <span>Dòng thời gian</span>
@@ -155,58 +157,16 @@
                 </div>
             </div>
         </div>
+
         <div id="lien_lac" class="background_sector alert alert-dark shadow-none p-3 mb-5 bg-light rounded border ">
             <p id="lh_header" class="lien_he list-group-item list-group-item-action active ">Yêu thích</p>
+            <?php foreach($friends as $fr):?>
             <p class="lien_he ">
-                <a href="http://nguyenphucloi.epizy.com/1660321.html" class="list-group-item list-group-item-action" target="_blank">
-                    1 Nguyễn Phúc Lợi
+                <a href="http://localhost:8080/MangXaHoi/Users/<?php echo $fr['email']?>/?ID=<?php echo $currentUser['id'];?> " class="list-group-item list-group-item-action" target="_blank" onclick="">
+                    <?php echo $fr['fullname'];?>
                 </a>
             </p>
-            <p class="lien_he">
-                <a href="https://nghiiatran.000webhostapp.com/1660370-NghiiaTran.html" class="list-group-item list-group-item-action" target="_blank">
-                    2 Nghĩa Trần
-                </a>
-            </p>
-            <p class="lien_he">
-                <a href="https://trongvx.000webhostapp.com/1660655.html" class="list-group-item list-group-item-action" target="_blank">
-                    3 Võ Xuân Trọng
-                </a>
-            </p>
-            <p class="lien_he">
-                <a href="https://tuevo.000webhostapp.com/1660691.html" class="list-group-item list-group-item-action" target="_blank">
-                    4 Tuệ Võ
-                </a>
-            </p>
-            <p class="lien_he">
-                <a href="https://khonemhoanggia.000webhostapp.com/1660721.html" class="list-group-item list-group-item-action" target="_blank">
-                    5 Trần Quang Vinh
-                </a>
-            </p>
-            <p class="lien_he">
-                <a href="http://test472.coolpage.biz/1660472.html" class="list-group-item list-group-item-action" target="_blank">
-                    6 Nguyễn Minh Quang
-                </a>
-            </p>
-            <p class="lien_he">
-                <a href="https://suonheobay.000webhostapp.com/1660357.html" class="list-group-item list-group-item-action" target="_blank">
-                    7 Trương Phương Hoài Nam
-                </a>
-            </p>
-            <p class="lien_he">
-                <a href="https://tkloc.000webhostapp.com/1660317.html" class="list-group-item list-group-item-action" target="_blank">
-                    8 Trần Kim Lộc
-                </a>
-            </p>
-            <p class="lien_he">
-                <a href="http://1660372.epizy.com/1660372.html?i=2" class="list-group-item list-group-item-action" target="_blank">
-                    9 Nguyễn Hữu Nghĩa
-                </a>
-            </p>
-            <p class="lien_he">
-                <a href="https://laduylocit.000webhostapp.com/1660318" class="list-group-item list-group-item-action" target="_blank">
-                    10 Lã Duy Lộc
-                </a>
-            </p>
+          <?php endforeach;?>
         </div>
         <div id="ds_mon_hoc" class="shadow-none p-3 mb-5 bg-light rounded border">
         
@@ -228,10 +188,11 @@
             <?php foreach($postImages as $image):?>
                 <?php if($image['content']!=NULL&&$image['name_image']!=NULL):?>
                     <div id="post" class="dsmh_mon_hoc" style="line-height:8px;margin: 15px 15px;">
+                      
                       <p><strong id="nameUser"><?php echo $currentUser['fullname'];?></strong></p>
                       <p id="timeUpload" class="ten_truong glyphicon glyphicon-briefcase can_le_icon"><?php echo $image['uploaded_on'];?></p>
                       <p style="top: 76px;" class="dsmh_detail"><?php echo $image['content'];?></p>
-                      <img id="imageShow"src="Users/<?php echo $currentUser['email']; ?>/Uploads/<?php echo $image['name_image']; ?>"/>
+                      <img id="imageShow"src="Users/<?php echo $currentUser['email']; ?>/Uploads/<?php echo $image['name_image']; ?>">
                     </div>
                 <?php else: ?>
                   <?php if($image['name_image']==NULL&&$image['content']!=NULL): ?>
@@ -246,7 +207,7 @@
                       <div id="post" class="dsmh_mon_hoc" style="line-height:8px;margin: 15px 15px;">
                         <p><strong id="nameUser"><?php echo $currentUser['fullname'];?></strong></p>
                         <p id="timeUpload" class="ten_truong glyphicon glyphicon-briefcase can_le_icon"><?php echo $image['uploaded_on'];?></p>
-                        <img id="imageShow"src="Users/<?php echo $currentUser['email']; ?>/Uploads/<?php echo $image['name_image']; ?>"/>
+                        <img id="imageShow"src="Users/<?php echo $currentUser['email'];?>/Uploads/<?php echo $image['name_image'];?>">
                       </div>
                     <?php endif;?>      
                 <?php endif;?>
